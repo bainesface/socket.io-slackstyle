@@ -9,17 +9,21 @@ const expressServer = app.listen(9000);
 const io = socketio(expressServer);
 
 io.on('connection', (socket) => {
-  socket.emit('messageFromServer', { data: 'Welcome to the socket io server' });
-  socket.on('messageToServer', (dataFromClient) => {
-    console.log(dataFromClient);
+  let nsData = namespaces.map((ns) => {
+    return {
+      img: ns.img,
+      endpoint: ns.endpoint,
+    };
   });
-  socket.join('level1');
-  io.of('/')
-    .to('level1')
-    .emit('joined', `${socket.id} says I have joined the level 1 room!`);
+  socket.emit('nsList', nsData);
 });
 
-io.of('/admin').on('connection', (socket) => {
-  console.log('someone connected to the admin namespace');
-  io.of('/admin').emit('welcome', 'welcome to the admin channel');
+//loop through a namespace and listen to a connection
+namespaces.forEach((namespace) => {
+  io.of(namespace.endpoint).on('connection', (nsSocket) => {
+    console.log(`${nsSocket.id} has joined ${namespace.endpoint}`);
+    //a socket has connected to one of our chatgroup namespaces
+    //send that ns group info back
+    nsSocket.emit('nsRoomLoad', namespaces[0].rooms);
+  });
 });
