@@ -6,12 +6,12 @@ socket.on('messageFromServer', (dataFromServer) => {
   socket.emit('messageToServer', { data: 'data from the client!' });
 });
 
-socket.on('joined', (msg) => {
-  console.log(msg);
-});
-
 socket2.on('welcome', (msgFromServer) => {
   console.log(msgFromServer);
+});
+
+socket.on('joined', (msg) => {
+  console.log(msg);
 });
 
 document.querySelector('#message-form').addEventListener('submit', (event) => {

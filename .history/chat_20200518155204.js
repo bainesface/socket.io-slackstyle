@@ -13,7 +13,7 @@ io.on('connection', (socket) => {
     console.log(dataFromClient);
   });
   socket.join('level1');
-  io.of('/')
+  socket
     .to('level1')
     .emit('joined', `${socket.id} says I have joined the level 1 room!`);
 });

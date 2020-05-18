@@ -13,9 +13,7 @@ io.on('connection', (socket) => {
     console.log(dataFromClient);
   });
   socket.join('level1');
-  io.of('/')
-    .to('level1')
-    .emit('joined', `${socket.id} says I have joined the level 1 room!`);
+  socket.to('level1').emit('joined', 'I have joined the level 1 room!');
 });
 
 io.of('/admin').on('connection', (socket) => {
