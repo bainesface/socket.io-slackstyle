@@ -6,10 +6,6 @@ socket.on('messageFromServer', (dataFromServer) => {
   socket.emit('messageToServer', { data: 'data from the client!' });
 });
 
-socket2.on('welcome', (msgFromServer) => {
-  console.log(msgFromServer);
-});
-
 document.querySelector('#message-form').addEventListener('submit', (event) => {
   event.preventDefault();
   const newMessage = document.querySelector('#user-message').value;
