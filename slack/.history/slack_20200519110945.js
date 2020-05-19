@@ -31,6 +31,7 @@ namespaces.forEach((namespace) => {
       io.of('/wiki')
         .in(roomToJoin)
         .clients((error, clients) => {
+          console.log(clients.length);
           numberOfUsersCallback(clients.length);
         });
       const nsRoom = namespaces[0].rooms.find((room) => {
@@ -41,7 +42,6 @@ namespaces.forEach((namespace) => {
         .in(roomToJoin)
         .clients((err, clients) => {
           console.log(clients.length);
-          io.of('/wiki').in(roomToJoin).emit('updateMembers', clients.length);
         });
     });
     nsSocket.on('newMessageToServer', (msg) => {

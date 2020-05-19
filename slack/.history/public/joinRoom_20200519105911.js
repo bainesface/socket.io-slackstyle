@@ -6,6 +6,7 @@ function joinRoom(roomName) {
           >`;
   });
   nsSocket.on('historyCatchUp', (history) => {
+    console.log(history);
     const messagesUl = document.querySelector('#messages');
     messagesUl.innerHTML = '';
     history.forEach((message) => {
@@ -13,13 +14,5 @@ function joinRoom(roomName) {
       const currentMessages = messagesUl.innerHTML;
       messagesUl.innerHTML = currentMessages + newMessage;
     });
-    messagesUl.scrollTo(0, messagesUl.scrollHeight);
-  });
-  nsSocket.on('updateMembers', (numMembers) => {
-    document.querySelector(
-      '.curr-room-num-users'
-    ).innerHTML = `${numMembers} <span class="glyphicon glyphicon-user"></span
-          >`;
-    document.querySelector('.curr-room-text').innerText = `${roomName}`;
   });
 }

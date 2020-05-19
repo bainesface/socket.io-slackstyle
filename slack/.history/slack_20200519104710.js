@@ -27,21 +27,11 @@ namespaces.forEach((namespace) => {
     nsSocket.emit('nsRoomLoad', namespaces[0].rooms);
     nsSocket.on('joinRoom', (roomToJoin, numberOfUsersCallback) => {
       nsSocket.join(roomToJoin);
-
       io.of('/wiki')
         .in(roomToJoin)
         .clients((error, clients) => {
-          numberOfUsersCallback(clients.length);
-        });
-      const nsRoom = namespaces[0].rooms.find((room) => {
-        return room.roomTitle === roomToJoin;
-      });
-      nsSocket.emit('historyCatchUp', nsRoom.history);
-      io.of('/wiki')
-        .in(roomToJoin)
-        .clients((err, clients) => {
           console.log(clients.length);
-          io.of('/wiki').in(roomToJoin).emit('updateMembers', clients.length);
+          numberOfUsersCallback(clients.length);
         });
     });
     nsSocket.on('newMessageToServer', (msg) => {
@@ -57,11 +47,9 @@ namespaces.forEach((namespace) => {
       //get the keys
       const roomTitle = Object.keys(nsSocket.rooms)[1];
       //find the room object for this room
-      const nsRoom = namespaces[0].rooms.find((room) => {
+      const nsRoom = namespaces[0].room.find((room) => {
         return room.roomTitle === roomTitle;
       });
-      console.log(nsRoom);
-      nsRoom.addMessage(fullMsg);
       io.of('/wiki').to(roomTitle).emit('messageToClients', fullMsg);
     });
   });
