@@ -1,7 +1,7 @@
 const username = prompt('what is your username');
 const socket = io('http://localhost:9000', {
   query: {
-    username,
+    username',
   },
 }); //main namespace /
 let nsSocket = '';

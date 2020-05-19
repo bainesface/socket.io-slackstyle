@@ -45,7 +45,7 @@ namespaces.forEach((namespace) => {
       const fullMsg = {
         text: msg.text,
         time: Date.now(),
-        username,
+        username: 'bainesface',
         avatar: 'https://via.placeholder.com/30',
       };
       //send this message to ALL the sockets that are in the room that this socket is in
