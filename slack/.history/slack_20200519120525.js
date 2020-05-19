@@ -35,13 +35,9 @@ namespaces.forEach((namespace) => {
       //   });
 
       const nsRoom = namespace.rooms.find((room) => {
-        console.log(room, 'room');
-        console.log(room.roomTitle, 'roomTitle');
-        console.log(roomToJoin, 'roomToJoin');
-        console.log(room.history, 'roomhistory');
         return room.roomTitle === roomToJoin;
       });
-      console.log(nsRoom);
+      console.log(nsRoom.history);
 
       nsSocket.emit('historyCatchUp', nsRoom.history);
       io.of(namespace.endpoint)

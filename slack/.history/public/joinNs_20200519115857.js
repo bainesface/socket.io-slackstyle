@@ -2,9 +2,8 @@ function joinNs(endpoint) {
   nsSocket = io(`http://localhost:9000${endpoint}`);
   nsSocket.on('nsRoomLoad', (nsRooms) => {
     console.log(nsRooms, 'nsRooms');
-    let roomList = document.querySelector('.room-list');
-    roomList.innerHTML = '';
-
+    const roomList = document.querySelector('.room-list');
+    roomList.innterHTML = '';
     nsRooms.forEach((room) => {
       console.log(room, 'room');
       let glyph;

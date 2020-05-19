@@ -3,8 +3,7 @@ function joinNs(endpoint) {
   nsSocket.on('nsRoomLoad', (nsRooms) => {
     console.log(nsRooms, 'nsRooms');
     let roomList = document.querySelector('.room-list');
-    roomList.innerHTML = '';
-
+    roomList.innterHTML = '';
     nsRooms.forEach((room) => {
       console.log(room, 'room');
       let glyph;
