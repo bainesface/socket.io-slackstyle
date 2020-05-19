@@ -21,24 +21,22 @@ io.on('connection', (socket) => {
 //loop through a namespace and listen to a connection
 namespaces.forEach((namespace) => {
   io.of(namespace.endpoint).on('connection', (nsSocket) => {
-    //console.log(`${nsSocket.id} has joined ${namespace.endpoint}`);
+    console.log(`${nsSocket.id} has joined ${namespace.endpoint}`);
     //a socket has connected to one of our chatgroup namespaces
     //send that ns group info back
     nsSocket.emit('nsRoomLoad', namespace.rooms);
     nsSocket.on('joinRoom', (roomToJoin, numberOfUsersCallback) => {
-      const roomToLeave = Object.keys(nsSocket.rooms)[1];
-      nsSocket.leave(roomToLeave);
-      updateUsersInRoom(namespace, roomToLeave);
+      const roomTitle = Object.keys(nsSocket.rooms)[1];
+      nsSocket.leave(roomTitle);
       nsSocket.join(roomToJoin);
 
       const nsRoom = namespace.rooms.find((room) => {
         return room.roomTitle === roomToJoin;
       });
+      console.log(nsRoom);
 
       nsSocket.emit('historyCatchUp', nsRoom.history);
-      updateUsersInRoom(namespace, roomToJoin);
     });
-
     nsSocket.on('newMessageToServer', (msg) => {
       const fullMsg = {
         text: msg.text,
@@ -62,7 +60,7 @@ namespaces.forEach((namespace) => {
   });
 });
 
-function updateUsersInRoom(namespace, roomToJoin) {
+function updateUsersInRoom() {
   io.of(namespace.endpoint)
     .in(roomToJoin)
     .clients((err, clients) => {

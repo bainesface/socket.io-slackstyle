@@ -1,4 +1,5 @@
 function joinRoom(roomName) {
+  console.log(roomName);
   nsSocket.emit('joinRoom', roomName, (newNumberOfMembers) => {
     document.querySelector(
       '.curr-room-num-users'
@@ -25,17 +26,6 @@ function joinRoom(roomName) {
 
   let searchBox = document.querySelector('#search-box');
   searchBox.addEventListener('input', (event) => {
-    let messages = Array.from(document.getElementsByClassName('message-text'));
-    messages.forEach((message) => {
-      if (
-        message.innerText
-          .toLowerCase()
-          .indexOf(event.target.value.toLowerCase()) === -1
-      ) {
-        message.style.display = 'none';
-      } else {
-        message.style.display = 'block';
-      }
-    });
+    console.log(event.target.value);
   });
 }

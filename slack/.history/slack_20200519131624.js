@@ -21,24 +21,36 @@ io.on('connection', (socket) => {
 //loop through a namespace and listen to a connection
 namespaces.forEach((namespace) => {
   io.of(namespace.endpoint).on('connection', (nsSocket) => {
-    //console.log(`${nsSocket.id} has joined ${namespace.endpoint}`);
+    console.log(`${nsSocket.id} has joined ${namespace.endpoint}`);
     //a socket has connected to one of our chatgroup namespaces
     //send that ns group info back
     nsSocket.emit('nsRoomLoad', namespace.rooms);
     nsSocket.on('joinRoom', (roomToJoin, numberOfUsersCallback) => {
-      const roomToLeave = Object.keys(nsSocket.rooms)[1];
-      nsSocket.leave(roomToLeave);
-      updateUsersInRoom(namespace, roomToLeave);
+      const roomTitle = Object.keys(nsSocket.rooms)[1];
+      nsSocket.leave(roomTitle);
       nsSocket.join(roomToJoin);
+
+      // io.of(namespace.endpoint)
+      //   .in(roomToJoin)
+      //   .clients((error, clients) => {
+      //     numberOfUsersCallback(clients.length);
+      //   });
 
       const nsRoom = namespace.rooms.find((room) => {
         return room.roomTitle === roomToJoin;
       });
+      console.log(nsRoom);
 
       nsSocket.emit('historyCatchUp', nsRoom.history);
-      updateUsersInRoom(namespace, roomToJoin);
+      io.of(namespace.endpoint)
+        .in(roomToJoin)
+        .clients((err, clients) => {
+          console.log(clients.length);
+          io.of(namespace.endpoint)
+            .in(roomToJoin)
+            .emit('updateMembers', clients.length);
+        });
     });
-
     nsSocket.on('newMessageToServer', (msg) => {
       const fullMsg = {
         text: msg.text,
@@ -55,20 +67,9 @@ namespaces.forEach((namespace) => {
       const nsRoom = namespace.rooms.find((room) => {
         return room.roomTitle === roomTitle;
       });
-
+      console.log(nsRoom);
       nsRoom.addMessage(fullMsg);
       io.of(namespace.endpoint).to(roomTitle).emit('messageToClients', fullMsg);
     });
   });
 });
-
-function updateUsersInRoom(namespace, roomToJoin) {
-  io.of(namespace.endpoint)
-    .in(roomToJoin)
-    .clients((err, clients) => {
-      console.log(clients.length);
-      io.of(namespace.endpoint)
-        .in(roomToJoin)
-        .emit('updateMembers', clients.length);
-    });
-}

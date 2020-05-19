@@ -8,12 +8,12 @@ function joinNs(endpoint) {
 
   nsSocket = io(`http://localhost:9000${endpoint}`);
   nsSocket.on('nsRoomLoad', (nsRooms) => {
-    // console.log(nsRooms, 'nsRooms');
+    console.log(nsRooms, 'nsRooms');
     let roomList = document.querySelector('.room-list');
     roomList.innerHTML = '';
 
     nsRooms.forEach((room) => {
-      //console.log(room, 'room');
+      console.log(room, 'room');
       let glyph;
       if (room.privateRoom) {
         glyph = 'lock';
@@ -26,7 +26,7 @@ function joinNs(endpoint) {
     console.log(roomNodes, 'roomNodes');
     Array.from(roomNodes).forEach((element) => {
       element.addEventListener('click', (event) => {
-        // console.log('someone clicked on', event.target.innerText);
+        console.log('someone clicked on', event.target.innerText);
         joinRoom(event.target.innerText);
       });
     });
