@@ -31,18 +31,8 @@ namespaces.forEach((namespace) => {
         .in(roomToJoin)
         .clients((error, clients) => {
           console.log(clients.length);
-          numberOfUsersCallback(clients.length);
         });
-    });
-    nsSocket.on('newMessageToServer', (msg) => {
-      const fullMsg = {
-        text: msg.text,
-        time: Date.now(),
-        username: 'bainesface',
-        avatar: 'https://via.placeholder.com/30',
-      };
-      const roomTitle = Object.keys(nsSocket.rooms)[1];
-      io.of('/wiki').to(roomTitle).emit('messageToClients', fullMsg);
+      numberOfUsersCallback(clients.length);
     });
   });
 });

@@ -35,14 +35,10 @@ namespaces.forEach((namespace) => {
         });
     });
     nsSocket.on('newMessageToServer', (msg) => {
-      const fullMsg = {
-        text: msg.text,
-        time: Date.now(),
-        username: 'bainesface',
-        avatar: 'https://via.placeholder.com/30',
-      };
-      const roomTitle = Object.keys(nsSocket.rooms)[1];
-      io.of('/wiki').to(roomTitle).emit('messageToClients', fullMsg);
+      console.log(msg);
+      console.log(nsSocket.rooms);
+      const roomTitle = Object.keys(nsSocket.rooms);
+      console.log(roomTitle);
     });
   });
 });

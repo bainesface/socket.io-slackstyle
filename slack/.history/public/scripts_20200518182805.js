@@ -1,5 +1,4 @@
 const socket = io('http://localhost:9000'); //main namespace /
-let nsSocket = '';
 
 socket.on('nsList', (nsData) => {
   let namespacesDiv = document.querySelector('.namespaces');
